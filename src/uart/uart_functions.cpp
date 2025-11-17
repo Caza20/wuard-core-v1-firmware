@@ -99,7 +99,8 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c == "chip_id") return CMD_CHIP_ID;
   if (c == "fw_version") return CMD_FW_VERSION;
   if (c == "bootloader_version") return CMD_BOOTLOADER_VERSION;
-  if (c == "session_ping") return CMD_SESSION_PING;
+  if (c == "secure_session_on") return CMD_SECURE_SESSION_ON;
+  if (c == "secure_session_off") return CMD_SECURE_SESSION_OFF;
   return CMD_UNKNOWN;
 }
 
@@ -122,9 +123,14 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       sendData(cmd_bootloader_version_func());
       break;
       
-    case CMD_SESSION_PING:
-      sendData("OK:session_ping\n");
+    case CMD_SECURE_SESSION_ON:
+      sendData(cmd_secure_session_func(true));
       break;
+
+    case CMD_SECURE_SESSION_OFF:
+      sendData(cmd_secure_session_func(false));
+      break;
+
     default:
       // comando no reconocido
       sendData("ERR:UNKNOWN_COMMAND:" + originalCmd + "\n");

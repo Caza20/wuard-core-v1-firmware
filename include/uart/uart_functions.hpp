@@ -15,6 +15,7 @@
 #include "commands/cmd_chip_id_func.hpp"
 #include "commands/cmd_fw_version_func.hpp"
 #include "commands/cmd_bootloader_version_func.hpp"
+#include "commands/cmd_secure_session.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
@@ -47,7 +48,8 @@ class uartFunctions {
             CMD_CHIP_ID, 
             CMD_FW_VERSION, 
             CMD_BOOTLOADER_VERSION,
-            CMD_SESSION_PING 
+            CMD_SECURE_SESSION_ON,
+            CMD_SECURE_SESSION_OFF
         };
 
         CommandId parseCommand(const String &cmd);
