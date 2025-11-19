@@ -8,6 +8,8 @@
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  */
 
+ session_state_t state = {0};
+
 //**********************************************************************
 //*                     Principal functions                            *
 //**********************************************************************
@@ -46,7 +48,7 @@ String cmd_secure_session_func(bool flag) {
 
     //---------------------------------------------------------------------------------------//
         // Separated API calls for starting a secure session:
-        session_state_t state = {0};
+        // session_state_t state = {0};
 
         // Inicialize session from a server side by creating state->ehpriv and state->ehpub,
         // l2 request is prepared into handle's buffer (h->l2_buff)

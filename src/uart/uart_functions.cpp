@@ -101,6 +101,7 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c == "bootloader_version") return CMD_BOOTLOADER_VERSION;
   if (c == "secure_session_on") return CMD_SECURE_SESSION_ON;
   if (c == "secure_session_off") return CMD_SECURE_SESSION_OFF;
+  if (c.startsWith("encode_text")) return CMD_ENCODE_TEXT;
   return CMD_UNKNOWN;
 }
 
@@ -129,6 +130,14 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
 
     case CMD_SECURE_SESSION_OFF:
       sendData(cmd_secure_session_func(false));
+      break;
+
+    case CMD_ENCODE_TEXT:
+      char resultado[100];
+      strcpy(resultado, originalCmd.c_str() + 12);
+      sendData(resultado);
+      sendData(String(strlen(resultado)));
+      sendData(cmd_encode_text_func(resultado));
       break;
 
     default:

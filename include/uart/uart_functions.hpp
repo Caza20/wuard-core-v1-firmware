@@ -16,6 +16,7 @@
 #include "commands/cmd_fw_version_func.hpp"
 #include "commands/cmd_bootloader_version_func.hpp"
 #include "commands/cmd_secure_session.hpp"
+#include "commands/cmd_encode_text_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
@@ -49,7 +50,8 @@ class uartFunctions {
             CMD_FW_VERSION, 
             CMD_BOOTLOADER_VERSION,
             CMD_SECURE_SESSION_ON,
-            CMD_SECURE_SESSION_OFF
+            CMD_SECURE_SESSION_OFF,
+            CMD_ENCODE_TEXT
         };
 
         CommandId parseCommand(const String &cmd);

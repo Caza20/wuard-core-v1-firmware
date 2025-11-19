@@ -13,6 +13,7 @@
 #include <Arduino.h>
 #include "libtropic_platfomio.hpp"
 
+extern session_state_t state;
 
 String cmd_secure_session_func(bool flag);
 
