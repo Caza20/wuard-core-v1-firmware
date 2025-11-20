@@ -102,6 +102,7 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c == "secure_session_on") return CMD_SECURE_SESSION_ON;
   if (c == "secure_session_off") return CMD_SECURE_SESSION_OFF;
   if (c.startsWith("encode_text")) return CMD_ENCODE_TEXT;
+  if (c.startsWith("random_value")) return CMD_RANDOM_VALUE;
   return CMD_UNKNOWN;
 }
 
@@ -135,9 +136,17 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
     case CMD_ENCODE_TEXT:
       char resultado[100];
       strcpy(resultado, originalCmd.c_str() + 12);
-      sendData(resultado);
-      sendData(String(strlen(resultado)));
       sendData(cmd_encode_text_func(resultado));
+      break;
+
+    case CMD_RANDOM_VALUE: 
+      char Nbytes[10];
+      strcpy(Nbytes, originalCmd.c_str() + 13);
+      if ((uint16_t)atoi(Nbytes) > 255) {
+        sendData("ERR:VALUE_TOO_LARGE\n");
+      } else {
+        sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
+      }
       break;
 
     default:

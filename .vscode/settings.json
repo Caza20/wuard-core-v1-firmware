@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "functional": "cpp"
+        "functional": "cpp",
+        "text_encoding": "cpp",
+        "thread": "cpp"
     }
 }
