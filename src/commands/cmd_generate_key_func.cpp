@@ -55,14 +55,6 @@ String cmd_generate_key_func(uint8_t slot) {
 
     response += read_response.substring(7); // Skip "OK:KEY:"
 
-    // char buf[3];
-    // for (int i = 0; i < 32; i++) {
-    //     sprintf(buf, "%02X", pubkey[i]);
-    //     response += buf;
-    // }
-
-    // response += ";";
-
     return response;
 }
 
@@ -108,6 +100,43 @@ String cmd_read_key_func(uint8_t slot) {
     }
 
     response += ";";
+
+    return response;
+}
+
+String cmd_erase_key_func(uint8_t slot) {
+    String response = "";
+
+    lt_ret_t ret;
+
+    // Erase ECC key pair in TROPIC01
+    // ECC_SLOT_0 = 0 -> First slot
+    // ECC_SLOT_1 = 1 -> Second slot
+    // .....
+    // ECC_SLOT_31 = 31 -> Last slot
+    ret = lt_out__ecc_key_erase(&__lt_handle__, ecc_slot_t (slot));
+    if (ret != LT_OK) {
+        return "ERR:ERASE_OUT\n";
+    }
+
+    // Send and receive via L2
+    ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
+    if (ret != LT_OK) {
+        return "ERR:SEND3\n";
+    }
+
+    ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
+    if (ret != LT_OK) {
+        return "ERR:RECV3\n";
+    }
+
+    // Decode response
+    ret = lt_in__ecc_key_erase(&__lt_handle__);
+    if (ret != LT_OK) {
+        return "ERR:ERASE_IN\n";
+    }
+
+    response = "OK:KEY_ERASED;";
 
     return response;
 }

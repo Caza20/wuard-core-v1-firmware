@@ -57,6 +57,7 @@ class uartFunctions {
             CMD_RANDOM_VALUE,
             CMD_GENERATE_KEY,
             CMD_READ_KEY,
+            CMD_ERASE_KEY,
         };
 
         CommandId parseCommand(const String &cmd);

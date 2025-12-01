@@ -105,6 +105,7 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c.startsWith("random_value")) return CMD_RANDOM_VALUE;
   if (c.startsWith("generate_key")) return CMD_GENERATE_KEY;
   if (c.startsWith("read_key")) return CMD_READ_KEY;
+  if (c.startsWith("erase_key")) return CMD_ERASE_KEY;
   return CMD_UNKNOWN;
 }
 
@@ -169,6 +170,17 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
         sendData("ERR:INVALID_SLOT\n");
       } else {
         sendData(cmd_read_key_func(slot));
+      }
+      break;
+    }
+
+    case CMD_ERASE_KEY: {
+      uint8_t slot = 0; // Default slot 0
+      slot = (uint8_t)atoi(originalCmd.c_str() + 10);
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT\n");
+      } else {
+        sendData(cmd_erase_key_func(slot));
       }
       break;
     }

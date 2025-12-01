@@ -18,5 +18,7 @@ String cmd_generate_key_func(uint8_t slot);
 
 String cmd_read_key_func(uint8_t slot);
 
+String cmd_erase_key_func(uint8_t slot);
+
 
 #endif
