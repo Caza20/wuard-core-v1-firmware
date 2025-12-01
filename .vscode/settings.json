@@ -2,6 +2,7 @@
     "files.associations": {
         "functional": "cpp",
         "text_encoding": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "cstdint": "cpp"
     }
 }

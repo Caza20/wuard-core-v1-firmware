@@ -18,6 +18,7 @@
 #include "commands/cmd_secure_session.hpp"
 #include "commands/cmd_encode_text_func.hpp"
 #include "commands/cmd_random_value_func.hpp"
+#include "commands/cmd_generate_key_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
@@ -54,6 +55,8 @@ class uartFunctions {
             CMD_SECURE_SESSION_OFF,
             CMD_ENCODE_TEXT,
             CMD_RANDOM_VALUE,
+            CMD_GENERATE_KEY,
+            CMD_READ_KEY,
         };
 
         CommandId parseCommand(const String &cmd);

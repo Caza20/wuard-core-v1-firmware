@@ -51,7 +51,7 @@ void uartFunctions::processCommand(const String &commands) {
   s.trim();
   
   // 1) Validate format: must end with ';'
-  if (s.length() == 0 || s.charAt(s.length() - 1) != ';') {
+  if (s.length() == 0 || s[s.length() - 1] != ';') {
     sendData("ERR:INVALID_FORMAT\n");
     return;
   }
@@ -103,6 +103,8 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c == "secure_session_off") return CMD_SECURE_SESSION_OFF;
   if (c.startsWith("encode_text")) return CMD_ENCODE_TEXT;
   if (c.startsWith("random_value")) return CMD_RANDOM_VALUE;
+  if (c.startsWith("generate_key")) return CMD_GENERATE_KEY;
+  if (c.startsWith("read_key")) return CMD_READ_KEY;
   return CMD_UNKNOWN;
 }
 
@@ -148,6 +150,30 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
         sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
       }
       break;
+
+    case CMD_GENERATE_KEY: {
+      uint8_t slot = 0; // Default slot 0
+      slot = (uint8_t)atoi(originalCmd.c_str() + 13);
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT\n");
+      } else {
+        sendData(cmd_generate_key_func(slot));
+      }
+      break;
+    }
+
+    case CMD_READ_KEY: {
+      uint8_t slot = 0; // Default slot 0
+      slot = (uint8_t)atoi(originalCmd.c_str() + 9);
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT\n");
+      } else {
+        sendData(cmd_read_key_func(slot));
+      }
+      break;
+    }
+
+    
 
     default:
       // comando no reconocido
