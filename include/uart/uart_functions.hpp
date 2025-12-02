@@ -19,6 +19,7 @@
 #include "commands/cmd_encode_text_func.hpp"
 #include "commands/cmd_random_value_func.hpp"
 #include "commands/cmd_generate_key_func.hpp"
+#include "commands/cmd_sign_eddsa_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
@@ -58,6 +59,7 @@ class uartFunctions {
             CMD_GENERATE_KEY,
             CMD_READ_KEY,
             CMD_ERASE_KEY,
+            CMD_SIGN_MESSAGE,
         };
 
         CommandId parseCommand(const String &cmd);
