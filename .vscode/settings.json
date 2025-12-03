@@ -3,6 +3,8 @@
         "functional": "cpp",
         "text_encoding": "cpp",
         "thread": "cpp",
-        "cstdint": "cpp"
+        "cstdint": "cpp",
+        "lt_l3_api_structs.h": "c",
+        "system_error": "cpp"
     }
 }

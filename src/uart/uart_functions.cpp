@@ -107,6 +107,7 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c.startsWith("read_key")) return CMD_READ_KEY;
   if (c.startsWith("erase_key")) return CMD_ERASE_KEY;
   if (c.startsWith("sign_message")) return CMD_SIGN_MESSAGE;
+  if (c.startsWith("hash_sha256_")) return CMD_HASH;
   return CMD_UNKNOWN;
 }
 
@@ -215,6 +216,25 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
           sendData(cmd_sign_eddsa_func(ecc_slot_t(slot), msg_bytes, msg_len));
           delete[] msg_bytes;
         }
+      }
+      break;
+    }
+
+    case CMD_HASH: {
+      String input = originalCmd.substring(12); // Extract after "sign_message "
+      input.trim();
+
+      if (input.length() == 0) {
+        sendData("ERR:EMPTY_MESSAGE\n");
+      } else {
+        // Convert message to byte array
+        uint8_t* msg_bytes = new uint8_t[input.length()];
+        for (uint16_t i = 0; i < input.length(); i++) {
+          msg_bytes[i] = (uint8_t)input[i];
+        }
+        // Call signing function
+        sendData(cmd_hash_func(msg_bytes, input.length()));
+        delete[] msg_bytes;
       }
       break;
     }
