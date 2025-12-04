@@ -43,7 +43,7 @@ String cmd_bootloader_version_func() {
             sprintf(buff_2X, "%02X", fw_ver[0]); 
             String fw_ver_0 = String(buff_2X);
 
-            response = "Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + "):";
+            response = "OK:Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ")";
 
             response += get_headers_v1();
         }
@@ -60,7 +60,7 @@ String cmd_bootloader_version_func() {
                 sprintf(buff_2X, "%02X", fw_ver[0]); 
                 String fw_ver_0 = String(buff_2X);
 
-                response = "Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + "):";
+                response = "OK:Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ")";
 
                 response += get_headers_v2();
             }

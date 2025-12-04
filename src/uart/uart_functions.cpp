@@ -108,6 +108,9 @@ uartFunctions::CommandId uartFunctions::parseCommand(const String &cmd) {
   if (c.startsWith("erase_key")) return CMD_ERASE_KEY;
   if (c.startsWith("sign_message")) return CMD_SIGN_MESSAGE;
   if (c.startsWith("hash_sha256_")) return CMD_HASH;
+  if (c.startsWith("mcounter_init")) return CMD_MCOUNTER_INIT;
+  if (c.startsWith("mcounter_get")) return CMD_MCOUNTER_GET;
+  if (c.startsWith("mcounter_update")) return CMD_MCOUNTER_UPDATE;
   return CMD_UNKNOWN;
 }
 
@@ -148,7 +151,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       char Nbytes[10];
       strcpy(Nbytes, originalCmd.c_str() + 13);
       if ((uint16_t)atoi(Nbytes) > 255) {
-        sendData("ERR:VALUE_TOO_LARGE\n");
+        sendData("ERR:VALUE_TOO_LARGE;\n");
       } else {
         sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
       }
@@ -158,7 +161,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       uint8_t slot = 0; // Default slot 0
       slot = (uint8_t)atoi(originalCmd.c_str() + 13);
       if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT\n");
+        sendData("ERR:INVALID_SLOT;\n");
       } else {
         sendData(cmd_generate_key_func(slot));
       }
@@ -169,7 +172,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       uint8_t slot = 0; // Default slot 0
       slot = (uint8_t)atoi(originalCmd.c_str() + 9);
       if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT\n");
+        sendData("ERR:INVALID_SLOT;\n");
       } else {
         sendData(cmd_read_key_func(slot));
       }
@@ -180,7 +183,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       uint8_t slot = 0; // Default slot 0
       slot = (uint8_t)atoi(originalCmd.c_str() + 10);
       if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT\n");
+        sendData("ERR:INVALID_SLOT;\n");
       } else {
         sendData(cmd_erase_key_func(slot));
       }
@@ -197,14 +200,14 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       uint8_t slot = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain slot between 
 
       if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT\n");
+        sendData("ERR:INVALID_SLOT;\n");
       } else {
         // Extract message after "sign_message "
         String message = input.substring(firstUnd + 1);
         message.trim();
 
         if (message.length() == 0) {
-          sendData("ERR:EMPTY_MESSAGE\n");
+          sendData("ERR:EMPTY_MESSAGE;\n");
         } else {
           // Convert message to byte array
           uint16_t msg_len = message.length();
@@ -225,7 +228,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       input.trim();
 
       if (input.length() == 0) {
-        sendData("ERR:EMPTY_MESSAGE\n");
+        sendData("ERR:EMPTY_MESSAGE;\n");
       } else {
         // Convert message to byte array
         uint8_t* msg_bytes = new uint8_t[input.length()];
@@ -239,11 +242,60 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       break;
     }
 
+    case CMD_MCOUNTER_INIT: {
+      String input = originalCmd.substring(14); // Extract after "mcounter_init "
+      input.trim();
+
+      int firstUnd = input.indexOf('_'); // to find the first underscore after "mcounter_init"
+
+      uint8_t index = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain index between 
+
+      if (index < 0 || index > 15) {
+        sendData("ERR:INVALID_INDEX;\n");
+      } else {
+        // Extract value after "mcounter_init "
+        String valueStr = input.substring(firstUnd + 1);
+        valueStr.trim();
+        uint32_t value = (uint32_t)atoi(valueStr.c_str());
+
+        sendData(cmd_mcounter_init_func(index, value));
+      }
+      break;
+    }
+
+    case CMD_MCOUNTER_GET: {
+      String input = originalCmd.substring(13); // Extract after "mcounter_get "
+      input.trim();
+
+      uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+
+      if (index < 0 || index > 15) {
+        sendData("ERR:INVALID_INDEX;\n");
+      } else {
+        sendData(cmd_mcounter_get_func(index));
+      }
+      break;
+    }
+
+    case CMD_MCOUNTER_UPDATE: {
+      String input = originalCmd.substring(16); // Extract after "mcounter_update "
+      input.trim();
+
+      uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+
+      if (index < 0 || index > 15) {
+        sendData("ERR:INVALID_INDEX;\n");
+      } else {
+        sendData(cmd_mcounter_update_func(index));
+      }
+      break;
+    }
+
     
 
     default:
       // comando no reconocido
-      sendData("ERR:UNKNOWN_COMMAND:" + originalCmd + "\n");
+      sendData("ERR:UNKNOWN_COMMAND:" + originalCmd + ";\n");
       break;
   }
 }

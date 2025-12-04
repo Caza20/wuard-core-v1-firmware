@@ -32,7 +32,7 @@ String cmd_secure_session_func(bool flag) {
         ret = lt_get_info_cert_store(&__lt_handle__, &store);
         if (LT_OK != ret) {
             // Failed to get Certificate Store , lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_GET_CERT_STORE\n";
+            response = "ERR:FAILED_TO_GET_CERT_STORE;\n";
             return response;
         }
 
@@ -42,7 +42,7 @@ String cmd_secure_session_func(bool flag) {
         ret = lt_get_st_pub(&store, stpub, 32);
         if (LT_OK != ret) {
             // Failed to get stpub key, lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_GET_ST_PUB\n";
+            response = "ERR:FAILED_TO_GET_ST_PUB;\n";
             return response;    
         }
 
@@ -56,7 +56,7 @@ String cmd_secure_session_func(bool flag) {
         ret = lt_out__session_start(&__lt_handle__, PAIRING_KEY_SLOT_INDEX_0, &state);
         if (LT_OK != ret) {
             // lt_out__session_start() failed, lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_START_SESSION\n";
+            response = "ERR:FAILED_TO_START_SESSION;\n";
             return response;
         }
 
@@ -67,14 +67,14 @@ String cmd_secure_session_func(bool flag) {
         ret = lt_l2_send(&__lt_handle__.l2);
         if (LT_OK != ret) {
             // lt_l2_send() failed, lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_SEND_L2\n";
+            response = "ERR:FAILED_TO_SEND_L2;\n";
             return response;
         }
         // Executing lt_l2_receive()..."
         ret = lt_l2_receive(&__lt_handle__.l2);
         if (LT_OK != ret) {
             // lt_l2_receive() failed, lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_RECEIVE_L2\n";
+            response = "ERR:FAILED_TO_RECEIVE_L2;\n";
             return response;
         }
 
@@ -87,11 +87,11 @@ String cmd_secure_session_func(bool flag) {
         ret = lt_in__session_start(&__lt_handle__, stpub, PAIRING_KEY_SLOT_INDEX_0, sh0priv, sh0pub, &state);
         if (LT_OK != ret) {
             //lt_in__session_start failed, lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_ESTABLISH_SESSION\n";
+            response = "ERR:FAILED_TO_ESTABLISH_SESSION;\n";
             return response;
         }
 
-        response = "OK:secure_session\n";
+        response = "OK:secure_session;\n";
     }
 
     //* flag == false => close secure session
@@ -100,11 +100,11 @@ String cmd_secure_session_func(bool flag) {
         ret = lt_session_abort(&__lt_handle__);
         if (LT_OK != ret) {
             // Failed to abort Secure Session, lt_ret_verbose(ret)
-            response = "ERR:FAILED_TO_ABORT_SESSION\n";
+            response = "ERR:FAILED_TO_ABORT_SESSION;\n";
             return response;
         }
 
-        response = "OK:abort_session\n";
+        response = "OK:abort_session;\n";
     }
 
     

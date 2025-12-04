@@ -24,7 +24,7 @@ String cmd_encode_text_func(const char* text) {
     ret = lt_out__ping(&__lt_handle__, (const uint8_t *)text, strlen(text));
     if (LT_OK != ret) {
         // lt_out__ping failed, lt_ret_verbose(ret));
-        response = "ERR:FAILED_TO_SEND_PING\n";
+        response = "ERR:FAILED_TO_SEND_PING;\n";
         return response;
     }
 
@@ -32,7 +32,7 @@ String cmd_encode_text_func(const char* text) {
     ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (LT_OK != ret) {
         // lt_l2_send_encrypted_cmd failed, lt_ret_verbose(ret)
-        response = "ERR:FAILED_TO_SEND_ENCRYPTED_CMD\n";
+        response = "ERR:FAILED_TO_SEND_ENCRYPTED_CMD;\n";
         return response;
     }
 
@@ -40,7 +40,7 @@ String cmd_encode_text_func(const char* text) {
     ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (LT_OK != ret) {
         // lt_l2_recv_encrypted_res failed, lt_ret_verbose(ret)
-        response = "ERR:FAILED_TO_RECV_ENCRYPTED_RES\n";
+        response = "ERR:FAILED_TO_RECV_ENCRYPTED_RES;\n";
         return response;
     }
 
@@ -48,14 +48,14 @@ String cmd_encode_text_func(const char* text) {
     ret = lt_in__ping(&__lt_handle__, recv_buf, strlen(text));
     if (LT_OK != ret) {
         // lt_in__ping failed, lt_ret_verbose(ret)
-        response = "ERR:FAILED_TO_RECEIVE_PING\n";
+        response = "ERR:FAILED_TO_RECEIVE_PING;\n";
         return response;
     }
 
     // add terminator character
     recv_buf[strlen(text)] = '\0';
 
-    response = String("TROPIC01:") + (char*)recv_buf + ";";
+    response = String("OK:TROPIC01:") + (char*)recv_buf + ";";
     return response;
 
 

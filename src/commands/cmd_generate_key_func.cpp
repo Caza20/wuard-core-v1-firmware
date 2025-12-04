@@ -24,24 +24,24 @@ String cmd_generate_key_func(uint8_t slot) {
     // ECC_SLOT_31 = 31 -> Last slot
     ret = lt_out__ecc_key_generate(&__lt_handle__, ecc_slot_t (slot), CURVE_ED25519);
     if (ret != LT_OK) {
-        return "ERR:FAILED_OUT\n";
+        return "ERR:FAILED_OUT;\n";
     }
 
     // Send and receive via L2
     ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (ret != LT_OK) {
-        return "ERR:SEND\n";
+        return "ERR:SEND;\n";
     }
 
     ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (ret != LT_OK) {
-        return "ERR:RECV\n";
+        return "ERR:RECV;\n";
     }
 
     // Decode response
     ret = lt_in__ecc_key_generate(&__lt_handle__);
     if (ret != LT_OK) {
-        return "ERR:FAILED_IN\n";
+        return "ERR:FAILED_IN;\n";
     }
 
     // 2) Read the newly generated public key
@@ -72,22 +72,22 @@ String cmd_read_key_func(uint8_t slot) {
     // this function uses the slot number directly
     ret = lt_out__ecc_key_read(&__lt_handle__, ecc_slot_t (slot));
     if (ret != LT_OK) {
-        return "ERR:READ_OUT\n";
+        return "ERR:READ_OUT;\n";
     }
 
     ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (ret != LT_OK) {
-        return "ERR:SEND2\n";
+        return "ERR:SEND;\n";
     }
 
     ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (ret != LT_OK) {
-        return "ERR:RECV2\n";
+        return "ERR:RECV;\n";
     }
 
     ret = lt_in__ecc_key_read(&__lt_handle__, pubkey, &curve, &origin);
     if (ret != LT_OK) {
-        return "ERR:READ_IN\n";
+        return "ERR:READ_IN;\n";
     }
 
     // Convert public key to HEX string
@@ -116,24 +116,24 @@ String cmd_erase_key_func(uint8_t slot) {
     // ECC_SLOT_31 = 31 -> Last slot
     ret = lt_out__ecc_key_erase(&__lt_handle__, ecc_slot_t (slot));
     if (ret != LT_OK) {
-        return "ERR:ERASE_OUT\n";
+        return "ERR:ERASE_OUT;\n";
     }
 
     // Send and receive via L2
     ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (ret != LT_OK) {
-        return "ERR:SEND3\n";
+        return "ERR:SEND;\n";
     }
 
     ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (ret != LT_OK) {
-        return "ERR:RECV3\n";
+        return "ERR:RECV;\n";
     }
 
     // Decode response
     ret = lt_in__ecc_key_erase(&__lt_handle__);
     if (ret != LT_OK) {
-        return "ERR:ERASE_IN\n";
+        return "ERR:ERASE_IN;\n";
     }
 
     response = "OK:KEY_ERASED;";

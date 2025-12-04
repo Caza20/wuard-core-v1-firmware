@@ -20,7 +20,7 @@ String cmd_random_value_func(const uint16_t n) {
     ret = lt_out__random_value_get(&__lt_handle__, n);
     if (LT_OK != ret) {
         // lt_out__random_value_get failed, lt_ret_verbose(ret));
-        response = "ERR:FAILED_TO_GET_RANDOM_VALUE\n";
+        response = "ERR:FAILED_TO_GET_RANDOM_VALUE;\n";
         return response;
     }
 
@@ -28,7 +28,7 @@ String cmd_random_value_func(const uint16_t n) {
     ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (LT_OK != ret) {
         // lt_l2_send_encrypted_cmd failed, lt_ret_verbose(ret)
-        response = "ERR:FAILED_TO_SEND_ENCRYPTED_CMD\n";
+        response = "ERR:FAILED_TO_SEND_ENCRYPTED_CMD;\n";
         return response;
     }
 
@@ -36,7 +36,7 @@ String cmd_random_value_func(const uint16_t n) {
     ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
     if (LT_OK != ret) {
         // lt_l2_recv_encrypted_res failed, lt_ret_verbose(ret)
-        response = "ERR:FAILED_TO_RECV_ENCRYPTED_RES\n";
+        response = "ERR:FAILED_TO_RECV_ENCRYPTED_RES;\n";
         return response;
     }
 
@@ -45,7 +45,7 @@ String cmd_random_value_func(const uint16_t n) {
     ret = lt_in__random_value_get(&__lt_handle__, random_buff, n);
     if (ret != LT_OK) {
         // lt_in__random_value_get failed, lt_ret_verbose(ret)
-        response = "ERR:FAILED_TO_RECEIVE_RANDOM_VALUE\n";
+        response = "ERR:FAILED_TO_RECEIVE_RANDOM_VALUE;\n";
         return response;
     }
 
