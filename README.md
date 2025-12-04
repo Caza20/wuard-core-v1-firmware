@@ -2,7 +2,7 @@
 
 Firmware for the **Wuart Core V1 PCB**, powered by an **RP2350 MCU** and the **Tropic01 cryptographic chip** by [Tropic Square](https://tropicsquare.com/).
 
-![wuard-core-v1](https://github.com/wuard/Wuard-core-v1-pcb/Output/images/wuard-core-v1-front.png)
+![wuard-core-v1](https://github.com/wuard/Wuard-core-v1-pcb/blob/main/Output/images/wuard-core-v1-front.png)
 
 🔗 **PCB repository:**  
 [Wuard-Core-V1 PCB](https://github.com/wuard/Wuard-core-v1-pcb)
