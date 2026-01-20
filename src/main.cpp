@@ -17,9 +17,10 @@ void setup() {
   tropic.begin();
 
   // to have a moment to open the serial monitor
-  delay(2000);
+  delay(5000);
 
   uart.sendData("Hello from Raspberry Pi Pico with libtropic!\n");
+
 
 }
 

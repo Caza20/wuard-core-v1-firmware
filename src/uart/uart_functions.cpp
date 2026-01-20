@@ -250,7 +250,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
 
       uint8_t index = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain index between 
 
-      if (index < 0 || index > 15) {
+      if (index < 16) {
         sendData("ERR:INVALID_INDEX;\n");
       } else {
         // Extract value after "mcounter_init "
@@ -269,7 +269,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
 
       uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
 
-      if (index < 0 || index > 15) {
+      if (index < 16) {
         sendData("ERR:INVALID_INDEX;\n");
       } else {
         sendData(cmd_mcounter_get_func(index));
@@ -283,7 +283,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
 
       uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
 
-      if (index < 0 || index > 15) {
+      if (index < 16) {
         sendData("ERR:INVALID_INDEX;\n");
       } else {
         sendData(cmd_mcounter_update_func(index));
