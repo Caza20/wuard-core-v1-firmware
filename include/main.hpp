@@ -2,7 +2,7 @@
 #define MAIN_HPP
 
 #include <Arduino.h>
-#include "libtropic_platfomio.hpp"
+#include <LibtropicArduino.h>
 
 //* Uart functions
 #include "uart/uart_functions.hpp"

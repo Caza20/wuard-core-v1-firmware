@@ -121,30 +121,30 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
     //? get chip ID
     case CMD_CHIP_ID: {
         // Call the function and send the response
-        sendData(cmd_chip_id_func());
+        // sendData(cmd_chip_id_func());
       break;
     }
         
     case CMD_FW_VERSION:
-      sendData(cmd_fw_version_func());
+      // sendData(cmd_fw_version_func());
       break;
 
     case CMD_BOOTLOADER_VERSION:
-      sendData(cmd_bootloader_version_func());
+      // sendData(cmd_bootloader_version_func());
       break;
       
     case CMD_SECURE_SESSION_ON:
-      sendData(cmd_secure_session_func(true));
+      // sendData(cmd_secure_session_func(true));
       break;
 
     case CMD_SECURE_SESSION_OFF:
-      sendData(cmd_secure_session_func(false));
+      // sendData(cmd_secure_session_func(false));
       break;
 
     case CMD_ENCODE_TEXT:
       char resultado[100];
       strcpy(resultado, originalCmd.c_str() + 12);
-      sendData(cmd_encode_text_func(resultado));
+      // sendData(cmd_encode_text_func(resultado));
       break;
 
     case CMD_RANDOM_VALUE: 
@@ -153,7 +153,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       if ((uint16_t)atoi(Nbytes) > 255) {
         sendData("ERR:VALUE_TOO_LARGE;\n");
       } else {
-        sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
+        // sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
       }
       break;
 
@@ -163,7 +163,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       if (slot < 0 || slot > 31) {
         sendData("ERR:INVALID_SLOT;\n");
       } else {
-        sendData(cmd_generate_key_func(slot));
+        // sendData(cmd_generate_key_func(slot));
       }
       break;
     }
@@ -174,7 +174,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       if (slot < 0 || slot > 31) {
         sendData("ERR:INVALID_SLOT;\n");
       } else {
-        sendData(cmd_read_key_func(slot));
+        // sendData(cmd_read_key_func(slot));
       }
       break;
     }
@@ -185,7 +185,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       if (slot < 0 || slot > 31) {
         sendData("ERR:INVALID_SLOT;\n");
       } else {
-        sendData(cmd_erase_key_func(slot));
+        // sendData(cmd_erase_key_func(slot));
       }
       break;
     }
@@ -216,7 +216,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
             msg_bytes[i] = (uint8_t)message[i];
           }
           // Call signing function
-          sendData(cmd_sign_eddsa_func(ecc_slot_t(slot), msg_bytes, msg_len));
+          // sendData(cmd_sign_eddsa_func(ecc_slot_t(slot), msg_bytes, msg_len));
           delete[] msg_bytes;
         }
       }
@@ -236,7 +236,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
           msg_bytes[i] = (uint8_t)input[i];
         }
         // Call signing function
-        sendData(cmd_hash_func(msg_bytes, input.length()));
+        // sendData(cmd_hash_func(msg_bytes, input.length()));
         delete[] msg_bytes;
       }
       break;
@@ -258,7 +258,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
         valueStr.trim();
         uint32_t value = (uint32_t)atoi(valueStr.c_str());
 
-        sendData(cmd_mcounter_init_func(index, value));
+        // sendData(cmd_mcounter_init_func(index, value));
       }
       break;
     }
@@ -272,7 +272,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       if (index < 16) {
         sendData("ERR:INVALID_INDEX;\n");
       } else {
-        sendData(cmd_mcounter_get_func(index));
+        // sendData(cmd_mcounter_get_func(index));
       }
       break;
     }
@@ -286,7 +286,7 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       if (index < 16) {
         sendData("ERR:INVALID_INDEX;\n");
       } else {
-        sendData(cmd_mcounter_update_func(index));
+        // sendData(cmd_mcounter_update_func(index));
       }
       break;
     }
