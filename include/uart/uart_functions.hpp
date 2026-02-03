@@ -15,6 +15,7 @@
 //* Commands
 #include "commands/cmd_chip_id_func.hpp"
 #include "commands/cmd_bootloader_version_func.hpp"
+#include "commands/cmd_secure_session_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1

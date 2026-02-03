@@ -167,13 +167,13 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       break;
     }
       
-    // case CMD_SECURE_SESSION_ON:
-    //   // sendData(cmd_secure_session_func(true));
-    //   break;
+    case CMD_SECURE_SESSION_ON:
+      sendData(cmd_secure_session_func(tropic01.getHandle(), true, PAIRING_KEY_PRIV, PAIRING_KEY_PUB, PAIRING_KEY_SLOT));
+      break;
 
-    // case CMD_SECURE_SESSION_OFF:
-    //   // sendData(cmd_secure_session_func(false));
-    //   break;
+    case CMD_SECURE_SESSION_OFF:
+      sendData(cmd_secure_session_func(tropic01.getHandle(), false, PAIRING_KEY_PRIV, PAIRING_KEY_PUB, PAIRING_KEY_SLOT));
+      break;
 
     // case CMD_ENCODE_TEXT:
     //   char resultado[100];
