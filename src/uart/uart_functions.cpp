@@ -120,8 +120,10 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
 
     //? get chip ID
     case CMD_CHIP_ID: {
+        lt_chip_id_t chip_id = {0};
+        tropic01.getChipID(chip_id);
         // Call the function and send the response
-        // sendData(cmd_chip_id_func());
+        sendData(cmd_chip_id_func(chip_id));
       break;
     }
         

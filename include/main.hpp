@@ -8,7 +8,7 @@
 #include "uart/uart_functions.hpp"
 
 
-
+extern Tropic01 tropic01;  
 
 
 

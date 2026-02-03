@@ -10,9 +10,10 @@
  */
 
 #include <Arduino.h>
+#include "main.hpp"
 
 //* Commands
-
+#include "commands/cmd_chip_id_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
