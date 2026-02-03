@@ -13,8 +13,10 @@
 #include <Arduino.h>
 #include <LibtropicArduino.h>
 
+#include "tropic01/tropic01.h"
 
-String cmd_chip_id_func(lt_chip_id_t chip_id);
+
+String cmd_chip_id_func();
 
 
 #endif

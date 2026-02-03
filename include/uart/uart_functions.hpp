@@ -10,7 +10,8 @@
  */
 
 #include <Arduino.h>
-#include "main.hpp"
+
+#include "tropic01/tropic01.h"
 
 //* Commands
 #include "commands/cmd_chip_id_func.hpp"

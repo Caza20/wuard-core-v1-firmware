@@ -13,10 +13,11 @@
 #include <Arduino.h>
 #include <LibtropicArduino.h>
 
+#include "tropic01/tropic01.h"
+
 // extern session_state_t state;
 
-String cmd_secure_session_func(lt_handle_t* handle, bool flag, const uint8_t *shipriv, const uint8_t *shipub,
-                               const lt_pkey_index_t pkey_index);
+String cmd_secure_session_func(bool flag);
 
 
 #endif

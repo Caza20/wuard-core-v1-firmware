@@ -120,14 +120,8 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
 
     //? get chip ID
     case CMD_CHIP_ID: {
-        lt_chip_id_t chip_id = {0};
-        lt_ret_t res = tropic01.getChipID(chip_id);
-        if (res != LT_OK) {
-          sendData("ERR:CHIP_ID_FAIL;\n");
-          return;
-        } 
         // Call the function and send the response
-        sendData(cmd_chip_id_func(chip_id));
+        sendData(cmd_chip_id_func());
       break;
     }
         
@@ -136,43 +130,43 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       break;
 
     case CMD_BOOTLOADER_VERSION: {
-      uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
+      // uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
 
-      lt_ret_t res = tropic01.getBootloaderVersion(fw_ver);
-      if (res != LT_OK) {
-        sendData("ERR:FW_VERSION_FAIL;\n");
-        return;
-      }
+      // lt_ret_t res = tropic01.getBootloaderVersion(fw_ver);
+      // if (res != LT_OK) {
+      //   sendData("ERR:FW_VERSION_FAIL;\n");
+      //   return;
+      // }
 
-      sendData("FW_ver = " + String(fw_ver[3]) + "." + String(fw_ver[2]) + "." + String(fw_ver[1]) + ";" + "\n");
+      // sendData("FW_ver = " + String(fw_ver[3]) + "." + String(fw_ver[2]) + "." + String(fw_ver[1]) + ";" + "\n");
 
-      String response = cmd_bootloader_version_func(fw_ver);
+      // String response = cmd_bootloader_version_func(fw_ver);
 
-      if (response.startsWith("ERR")) {
-        sendData(response);
-        return;
-      }
+      // if (response.startsWith("ERR")) {
+      //   sendData(response);
+      //   return;
+      // }
 
       
 
-      if (((fw_ver[3] & 0x7f) == 1) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
-        response += tropic01.get_headers_v1();
-      }
-      else {
-        response += tropic01.get_headers_v2();
-      }
+      // if (((fw_ver[3] & 0x7f) == 1) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
+      //   response += tropic01.get_headers_v1();
+      // }
+      // else {
+      //   response += tropic01.get_headers_v2();
+      // }
 
-      sendData(response);
+      sendData(cmd_bootloader_version_func());
 
       break;
     }
       
     case CMD_SECURE_SESSION_ON:
-      sendData(cmd_secure_session_func(tropic01.getHandle(), true, PAIRING_KEY_PRIV, PAIRING_KEY_PUB, PAIRING_KEY_SLOT));
+      sendData(cmd_secure_session_func(true));
       break;
 
     case CMD_SECURE_SESSION_OFF:
-      sendData(cmd_secure_session_func(tropic01.getHandle(), false, PAIRING_KEY_PRIV, PAIRING_KEY_PUB, PAIRING_KEY_SLOT));
+      sendData(cmd_secure_session_func(false));
       break;
 
     // case CMD_ENCODE_TEXT:

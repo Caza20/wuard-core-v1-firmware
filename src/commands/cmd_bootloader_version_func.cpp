@@ -12,73 +12,110 @@
 //*                     Principal functions                            *
 //**********************************************************************
 
-String cmd_bootloader_version_func(uint8_t *fw_ver) {
+String cmd_bootloader_version_func() {
+    // String response = "";
+
+    // uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
+
+    // lt_ret_t ret = lt_reboot(handle, TR01_MAINTENANCE_REBOOT);
+    // if (ret != LT_OK) {
+    //     lt_deinit(handle);
+    //     response = "ERR:REBOOT_FAIL;\n";
+    // }
+
+    // lt_tr01_mode_t mode = LT_TR01_MAINTENANCE;
+
+    // ret = lt_get_tr01_mode(handle, &mode);
+    // if (ret == LT_OK) {
+    //     ret = lt_get_info_riscv_fw_ver(handle, fw_ver);
+    //     if (ret != LT_OK) {
+    //         lt_deinit(handle);
+    //         response = "ERR:GET_FW_VERSION_FAIL;\n";
+    //     }
+    // } else {
+    //     lt_deinit(handle);
+    //     response = "ERR:GET_MODE_FAIL;\n";
+    // }
+
+    // // Checking if bootloader version is 1.0.1
+    // if (((fw_ver[3] & 0x7f) == 1) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
+    //     char buff_2X[3]; 
+    //     sprintf(buff_2X, "%02X", fw_ver[3] & 0x7f); 
+    //     String fw_ver_3 = String(buff_2X);
+    //     sprintf(buff_2X, "%02X", fw_ver[2]); 
+    //     String fw_ver_2 = String(buff_2X);
+    //     sprintf(buff_2X, "%02X", fw_ver[1]); 
+    //     String fw_ver_1 = String(buff_2X);
+    //     sprintf(buff_2X, "%02X", fw_ver[0]); 
+    //     String fw_ver_0 = String(buff_2X);
+
+    //     response = "OK:Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ")";
+
+    //     response += get_headers_v1(handle);
+    // }
+    // else {
+    //     // Checking if bootloader version is 2.0.1
+    //     if (((fw_ver[3] & 0x7f) == 2) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
+    //         char buff_2X[3]; 
+    //         sprintf(buff_2X, "%02X", fw_ver[3] & 0x7f); 
+    //         String fw_ver_3 = String(buff_2X);
+    //         sprintf(buff_2X, "%02X", fw_ver[2]); 
+    //         String fw_ver_2 = String(buff_2X);
+    //         sprintf(buff_2X, "%02X", fw_ver[1]); 
+    //         String fw_ver_1 = String(buff_2X);
+    //         sprintf(buff_2X, "%02X", fw_ver[0]); 
+    //         String fw_ver_0 = String(buff_2X);
+
+    //         response = "OK:Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ")";
+
+    //         response += get_headers_v2(handle);
+    //     }
+    //     else {
+    //         char buff_2X[3]; 
+    //         sprintf(buff_2X, "%02X", fw_ver[3] & 0x7f); 
+    //         String fw_ver_3 = String(buff_2X);
+    //         sprintf(buff_2X, "%02X", fw_ver[2]); 
+    //         String fw_ver_2 = String(buff_2X);
+    //         sprintf(buff_2X, "%02X", fw_ver[1]); 
+    //         String fw_ver_1 = String(buff_2X);
+    //         sprintf(buff_2X, "%02X", fw_ver[0]); 
+    //         String fw_ver_0 = String(buff_2X);
+
+    //         response = "ERR:UNKNOWN_BOOTLOADER_VERSION=" + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ");\n";
+
+    //         return response;
+    //     }
+    // }
+    
+    // return response + ";\n";
+
     String response = "";
 
-    // Checking if bootloader version is 1.0.1
-    if (((fw_ver[3] & 0x7f) == 1) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
-        char buff_2X[3]; 
-        sprintf(buff_2X, "%02X", fw_ver[3] & 0x7f); 
-        String fw_ver_3 = String(buff_2X);
-        sprintf(buff_2X, "%02X", fw_ver[2]); 
-        String fw_ver_2 = String(buff_2X);
-        sprintf(buff_2X, "%02X", fw_ver[1]); 
-        String fw_ver_1 = String(buff_2X);
-        sprintf(buff_2X, "%02X", fw_ver[0]); 
-        String fw_ver_0 = String(buff_2X);
+    uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
 
-        response = "OK:Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ")";
-
-        // response += get_headers_v1();
+    lt_ret_t res = tropic01.getBootloaderVersion(fw_ver);
+    if (res != LT_OK) {
+      response = "ERR:FW_VERSION_FAIL;\n";
+      return response;
     }
-    else {
-        // Checking if bootloader version is 2.0.1
-        if (((fw_ver[3] & 0x7f) == 2) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
-            char buff_2X[3]; 
-            sprintf(buff_2X, "%02X", fw_ver[3] & 0x7f); 
-            String fw_ver_3 = String(buff_2X);
-            sprintf(buff_2X, "%02X", fw_ver[2]); 
-            String fw_ver_2 = String(buff_2X);
-            sprintf(buff_2X, "%02X", fw_ver[1]); 
-            String fw_ver_1 = String(buff_2X);
-            sprintf(buff_2X, "%02X", fw_ver[0]); 
-            String fw_ver_0 = String(buff_2X);
 
-            response = "OK:Bootloader version = " + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ")";
+    response = tropic01.printBootloaderVersion(fw_ver);
 
-            // response += get_headers_v2();
-        }
-        else {
-            char buff_2X[3]; 
-            sprintf(buff_2X, "%02X", fw_ver[3] & 0x7f); 
-            String fw_ver_3 = String(buff_2X);
-            sprintf(buff_2X, "%02X", fw_ver[2]); 
-            String fw_ver_2 = String(buff_2X);
-            sprintf(buff_2X, "%02X", fw_ver[1]); 
-            String fw_ver_1 = String(buff_2X);
-            sprintf(buff_2X, "%02X", fw_ver[0]); 
-            String fw_ver_0 = String(buff_2X);
-
-            response = "ERR:UNKNOWN_BOOTLOADER_VERSION=" + fw_ver_3 + "." + fw_ver_2 + "." + fw_ver_1 + " (+ ." + fw_ver_0 + ");\n";
-
-            return response;
-        }
-    }
-    
-    return response + ";\n";
+    return response;
 }
 
-// //**********************************************************************
-// //*                     Auxiliary functions                            *
-// //**********************************************************************
+// // //**********************************************************************
+// // //*                     Auxiliary functions                            *
+// // //**********************************************************************
 
-// String get_headers_v1() {
+// String get_headers_v1(lt_handle_t* handle) {
 //     String response = "";
 
 //     uint8_t header[TR01_L2_GET_INFO_FW_HEADER_SIZE] = {0};
+//     uint16_t header_read_size = 0;
 
 //     // Read header from FW_BANK_FW1
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_FW1, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_FW1, header, sizeof(header), &header_read_size) == LT_OK) {
 //         response = header_boot_v1_0_1(header, TR01_FW_BANK_FW1);
 //     }
 //     else {
@@ -88,7 +125,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 //     // Read header from FW_BANK_FW2
 //     memset(header, 0, sizeof(header));
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_FW2, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_FW2, header, sizeof(header), &header_read_size) == LT_OK) {
 //         response += header_boot_v1_0_1(header, TR01_FW_BANK_FW2);
 //     }
 //     else {
@@ -98,7 +135,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 //     // Read header from FW_BANK_SPECT1
 //     memset(header, 0, sizeof(header));
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_SPECT1, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_SPECT1, header, sizeof(header), &header_read_size) == LT_OK) {
 //         response += header_boot_v1_0_1(header, TR01_FW_BANK_SPECT1);
 //     }
 //     else {
@@ -108,7 +145,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 //     // Read header from FW_BANK_SPECT2
 //     memset(header, 0, sizeof(header));
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_SPECT2, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_SPECT2, header, sizeof(header), &header_read_size) == LT_OK) {
 //         response += header_boot_v1_0_1(header, TR01_FW_BANK_SPECT2);
 //     }
 //     else {
@@ -122,7 +159,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 // String header_boot_v1_0_1(uint8_t *data, lt_bank_id_t bank_id) {
 //     String response = "";
 
-//     struct header_boot_v1_t *p_h = (struct header_boot_v1_t *)data;
+//     struct lt_header_boot_v1_t *p_h = (struct lt_header_boot_v1_t *)data;
     
 //     switch (bank_id) {
 //         case TR01_FW_BANK_FW1:
@@ -203,13 +240,14 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 // // ----------------------------
 
-// String get_headers_v2() {
+// String get_headers_v2(lt_handle_t* handle) {
 //     String response = "";
 
 //     uint8_t header[TR01_L2_GET_INFO_FW_HEADER_SIZE] = {0};
+//     uint16_t header_read_size = 0;
 
 //     // Read header from FW_BANK_FW1
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_FW1, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_FW1, header, sizeof(header), &header_read_size) == LT_OK) {
 //         header_boot_v2_0_1(header, TR01_FW_BANK_FW1);
 //     }
 //     else {
@@ -219,7 +257,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 //     // Read header from FW_BANK_FW2
 //     memset(header, 0, sizeof(header));
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_FW2, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_FW2, header, sizeof(header), &header_read_size) == LT_OK) {
 //         header_boot_v2_0_1(header, TR01_FW_BANK_FW2);
 //     }
 //     else {
@@ -229,7 +267,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 //     // Read header from FW_BANK_SPECT1
 //     memset(header, 0, sizeof(header));
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_SPECT1, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_SPECT1, header, sizeof(header), &header_read_size) == LT_OK) {
 //         header_boot_v2_0_1(header, TR01_FW_BANK_SPECT1);
 //     }
 //     else {
@@ -239,7 +277,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 
 //     // Read header from FW_BANK_SPECT2
 //     memset(header, 0, sizeof(header));
-//     if (lt_get_info_fw_bank(&__lt_handle__, TR01_FW_BANK_SPECT2, header, sizeof(header)) == LT_OK) {
+//     if (lt_get_info_fw_bank(handle, TR01_FW_BANK_SPECT2, header, sizeof(header), &header_read_size) == LT_OK) {
 //         header_boot_v2_0_1(header, TR01_FW_BANK_SPECT2);
 //     }
 //     else {
@@ -255,7 +293,7 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 // {
 //     String response = "";
 
-//     struct header_boot_v2_t *p_h = (struct header_boot_v2_t *)data;
+//     struct lt_header_boot_v2_t *p_h = (struct lt_header_boot_v2_t *)data;
 
 //     switch (bank_id) {
 //         case TR01_FW_BANK_FW1:
@@ -302,8 +340,6 @@ String cmd_bootloader_version_func(uint8_t *fw_ver) {
 //     String ph_size = String(buff_8X);
 
 //     response += "Size= " + ph_size + ":";
-
-//     LT_LOG_INFO("      Git hash:           %08" PRIX32, p_h->git_hash);
 
 //     sprintf(buff_8X, "%08X", p_h->git_hash); 
 //     String ph_git_hash = String(buff_8X);
