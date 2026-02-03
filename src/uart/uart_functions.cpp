@@ -121,177 +121,209 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
     //? get chip ID
     case CMD_CHIP_ID: {
         lt_chip_id_t chip_id = {0};
-        tropic01.getChipID(chip_id);
+        lt_ret_t res = tropic01.getChipID(chip_id);
+        if (res != LT_OK) {
+          sendData("ERR:CHIP_ID_FAIL;\n");
+          return;
+        } 
         // Call the function and send the response
         sendData(cmd_chip_id_func(chip_id));
       break;
     }
         
-    case CMD_FW_VERSION:
+    case CMD_FW_VERSION:      
       // sendData(cmd_fw_version_func());
       break;
 
-    case CMD_BOOTLOADER_VERSION:
-      // sendData(cmd_bootloader_version_func());
-      break;
+    case CMD_BOOTLOADER_VERSION: {
+      uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
+
+      lt_ret_t res = tropic01.getBootloaderVersion(fw_ver);
+      if (res != LT_OK) {
+        sendData("ERR:FW_VERSION_FAIL;\n");
+        return;
+      }
+
+      sendData("FW_ver = " + String(fw_ver[3]) + "." + String(fw_ver[2]) + "." + String(fw_ver[1]) + ";" + "\n");
+
+      String response = cmd_bootloader_version_func(fw_ver);
+
+      if (response.startsWith("ERR")) {
+        sendData(response);
+        return;
+      }
+
       
-    case CMD_SECURE_SESSION_ON:
-      // sendData(cmd_secure_session_func(true));
-      break;
 
-    case CMD_SECURE_SESSION_OFF:
-      // sendData(cmd_secure_session_func(false));
-      break;
-
-    case CMD_ENCODE_TEXT:
-      char resultado[100];
-      strcpy(resultado, originalCmd.c_str() + 12);
-      // sendData(cmd_encode_text_func(resultado));
-      break;
-
-    case CMD_RANDOM_VALUE: 
-      char Nbytes[10];
-      strcpy(Nbytes, originalCmd.c_str() + 13);
-      if ((uint16_t)atoi(Nbytes) > 255) {
-        sendData("ERR:VALUE_TOO_LARGE;\n");
-      } else {
-        // sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
+      if (((fw_ver[3] & 0x7f) == 1) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
+        response += tropic01.get_headers_v1();
       }
-      break;
-
-    case CMD_GENERATE_KEY: {
-      uint8_t slot = 0; // Default slot 0
-      slot = (uint8_t)atoi(originalCmd.c_str() + 13);
-      if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT;\n");
-      } else {
-        // sendData(cmd_generate_key_func(slot));
+      else {
+        response += tropic01.get_headers_v2();
       }
+
+      sendData(response);
+
       break;
     }
+      
+    // case CMD_SECURE_SESSION_ON:
+    //   // sendData(cmd_secure_session_func(true));
+    //   break;
 
-    case CMD_READ_KEY: {
-      uint8_t slot = 0; // Default slot 0
-      slot = (uint8_t)atoi(originalCmd.c_str() + 9);
-      if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT;\n");
-      } else {
-        // sendData(cmd_read_key_func(slot));
-      }
-      break;
-    }
+    // case CMD_SECURE_SESSION_OFF:
+    //   // sendData(cmd_secure_session_func(false));
+    //   break;
 
-    case CMD_ERASE_KEY: {
-      uint8_t slot = 0; // Default slot 0
-      slot = (uint8_t)atoi(originalCmd.c_str() + 10);
-      if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT;\n");
-      } else {
-        // sendData(cmd_erase_key_func(slot));
-      }
-      break;
-    }
+    // case CMD_ENCODE_TEXT:
+    //   char resultado[100];
+    //   strcpy(resultado, originalCmd.c_str() + 12);
+    //   // sendData(cmd_encode_text_func(resultado));
+    //   break;
 
-    case CMD_SIGN_MESSAGE: {
-      String input = originalCmd.substring(13); // Extract after "sign_message "
-      input.trim();
+    // case CMD_RANDOM_VALUE: 
+    //   char Nbytes[10];
+    //   strcpy(Nbytes, originalCmd.c_str() + 13);
+    //   if ((uint16_t)atoi(Nbytes) > 255) {
+    //     sendData("ERR:VALUE_TOO_LARGE;\n");
+    //   } else {
+    //     // sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
+    //   }
+    //   break;
 
-      int firstUnd = input.indexOf('_'); // to find the first underscore after "sign_message"
-      int secondUnd = input.indexOf('_', firstUnd + 1); // to find the second underscore
+    // case CMD_GENERATE_KEY: {
+    //   uint8_t slot = 0; // Default slot 0
+    //   slot = (uint8_t)atoi(originalCmd.c_str() + 13);
+    //   if (slot < 0 || slot > 31) {
+    //     sendData("ERR:INVALID_SLOT;\n");
+    //   } else {
+    //     // sendData(cmd_generate_key_func(slot));
+    //   }
+    //   break;
+    // }
 
-      uint8_t slot = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain slot between 
+    // case CMD_READ_KEY: {
+    //   uint8_t slot = 0; // Default slot 0
+    //   slot = (uint8_t)atoi(originalCmd.c_str() + 9);
+    //   if (slot < 0 || slot > 31) {
+    //     sendData("ERR:INVALID_SLOT;\n");
+    //   } else {
+    //     // sendData(cmd_read_key_func(slot));
+    //   }
+    //   break;
+    // }
 
-      if (slot < 0 || slot > 31) {
-        sendData("ERR:INVALID_SLOT;\n");
-      } else {
-        // Extract message after "sign_message "
-        String message = input.substring(firstUnd + 1);
-        message.trim();
+    // case CMD_ERASE_KEY: {
+    //   uint8_t slot = 0; // Default slot 0
+    //   slot = (uint8_t)atoi(originalCmd.c_str() + 10);
+    //   if (slot < 0 || slot > 31) {
+    //     sendData("ERR:INVALID_SLOT;\n");
+    //   } else {
+    //     // sendData(cmd_erase_key_func(slot));
+    //   }
+    //   break;
+    // }
 
-        if (message.length() == 0) {
-          sendData("ERR:EMPTY_MESSAGE;\n");
-        } else {
-          // Convert message to byte array
-          uint16_t msg_len = message.length();
-          uint8_t* msg_bytes = new uint8_t[msg_len];
-          for (uint16_t i = 0; i < msg_len; i++) {
-            msg_bytes[i] = (uint8_t)message[i];
-          }
-          // Call signing function
-          // sendData(cmd_sign_eddsa_func(ecc_slot_t(slot), msg_bytes, msg_len));
-          delete[] msg_bytes;
-        }
-      }
-      break;
-    }
+    // case CMD_SIGN_MESSAGE: {
+    //   String input = originalCmd.substring(13); // Extract after "sign_message "
+    //   input.trim();
 
-    case CMD_HASH: {
-      String input = originalCmd.substring(12); // Extract after "sign_message "
-      input.trim();
+    //   int firstUnd = input.indexOf('_'); // to find the first underscore after "sign_message"
+    //   int secondUnd = input.indexOf('_', firstUnd + 1); // to find the second underscore
 
-      if (input.length() == 0) {
-        sendData("ERR:EMPTY_MESSAGE;\n");
-      } else {
-        // Convert message to byte array
-        uint8_t* msg_bytes = new uint8_t[input.length()];
-        for (uint16_t i = 0; i < input.length(); i++) {
-          msg_bytes[i] = (uint8_t)input[i];
-        }
-        // Call signing function
-        // sendData(cmd_hash_func(msg_bytes, input.length()));
-        delete[] msg_bytes;
-      }
-      break;
-    }
+    //   uint8_t slot = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain slot between 
 
-    case CMD_MCOUNTER_INIT: {
-      String input = originalCmd.substring(14); // Extract after "mcounter_init "
-      input.trim();
+    //   if (slot < 0 || slot > 31) {
+    //     sendData("ERR:INVALID_SLOT;\n");
+    //   } else {
+    //     // Extract message after "sign_message "
+    //     String message = input.substring(firstUnd + 1);
+    //     message.trim();
 
-      int firstUnd = input.indexOf('_'); // to find the first underscore after "mcounter_init"
+    //     if (message.length() == 0) {
+    //       sendData("ERR:EMPTY_MESSAGE;\n");
+    //     } else {
+    //       // Convert message to byte array
+    //       uint16_t msg_len = message.length();
+    //       uint8_t* msg_bytes = new uint8_t[msg_len];
+    //       for (uint16_t i = 0; i < msg_len; i++) {
+    //         msg_bytes[i] = (uint8_t)message[i];
+    //       }
+    //       // Call signing function
+    //       // sendData(cmd_sign_eddsa_func(ecc_slot_t(slot), msg_bytes, msg_len));
+    //       delete[] msg_bytes;
+    //     }
+    //   }
+    //   break;
+    // }
 
-      uint8_t index = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain index between 
+    // case CMD_HASH: {
+    //   String input = originalCmd.substring(12); // Extract after "sign_message "
+    //   input.trim();
 
-      if (index < 16) {
-        sendData("ERR:INVALID_INDEX;\n");
-      } else {
-        // Extract value after "mcounter_init "
-        String valueStr = input.substring(firstUnd + 1);
-        valueStr.trim();
-        uint32_t value = (uint32_t)atoi(valueStr.c_str());
+    //   if (input.length() == 0) {
+    //     sendData("ERR:EMPTY_MESSAGE;\n");
+    //   } else {
+    //     // Convert message to byte array
+    //     uint8_t* msg_bytes = new uint8_t[input.length()];
+    //     for (uint16_t i = 0; i < input.length(); i++) {
+    //       msg_bytes[i] = (uint8_t)input[i];
+    //     }
+    //     // Call signing function
+    //     // sendData(cmd_hash_func(msg_bytes, input.length()));
+    //     delete[] msg_bytes;
+    //   }
+    //   break;
+    // }
 
-        // sendData(cmd_mcounter_init_func(index, value));
-      }
-      break;
-    }
+    // case CMD_MCOUNTER_INIT: {
+    //   String input = originalCmd.substring(14); // Extract after "mcounter_init "
+    //   input.trim();
 
-    case CMD_MCOUNTER_GET: {
-      String input = originalCmd.substring(13); // Extract after "mcounter_get "
-      input.trim();
+    //   int firstUnd = input.indexOf('_'); // to find the first underscore after "mcounter_init"
 
-      uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+    //   uint8_t index = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain index between 
 
-      if (index < 16) {
-        sendData("ERR:INVALID_INDEX;\n");
-      } else {
-        // sendData(cmd_mcounter_get_func(index));
-      }
-      break;
-    }
+    //   if (index < 16) {
+    //     sendData("ERR:INVALID_INDEX;\n");
+    //   } else {
+    //     // Extract value after "mcounter_init "
+    //     String valueStr = input.substring(firstUnd + 1);
+    //     valueStr.trim();
+    //     uint32_t value = (uint32_t)atoi(valueStr.c_str());
 
-    case CMD_MCOUNTER_UPDATE: {
-      String input = originalCmd.substring(16); // Extract after "mcounter_update "
-      input.trim();
+    //     // sendData(cmd_mcounter_init_func(index, value));
+    //   }
+    //   break;
+    // }
 
-      uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+    // case CMD_MCOUNTER_GET: {
+    //   String input = originalCmd.substring(13); // Extract after "mcounter_get "
+    //   input.trim();
 
-      if (index < 16) {
-        sendData("ERR:INVALID_INDEX;\n");
-      } else {
-        // sendData(cmd_mcounter_update_func(index));
-      }
-      break;
-    }
+    //   uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+
+    //   if (index < 16) {
+    //     sendData("ERR:INVALID_INDEX;\n");
+    //   } else {
+    //     // sendData(cmd_mcounter_get_func(index));
+    //   }
+    //   break;
+    // }
+
+    // case CMD_MCOUNTER_UPDATE: {
+    //   String input = originalCmd.substring(16); // Extract after "mcounter_update "
+    //   input.trim();
+
+    //   uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+
+    //   if (index < 16) {
+    //     sendData("ERR:INVALID_INDEX;\n");
+    //   } else {
+    //     // sendData(cmd_mcounter_update_func(index));
+    //   }
+    //   break;
+    // }
 
     
 
