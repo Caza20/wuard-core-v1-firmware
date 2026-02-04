@@ -142,11 +142,11 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       sendData(cmd_secure_session_func(false));
       break;
 
-    // case CMD_ENCODE_TEXT:
-    //   char resultado[100];
-    //   strcpy(resultado, originalCmd.c_str() + 12);
-    //   // sendData(cmd_encode_text_func(resultado));
-    //   break;
+    case CMD_ENCODE_TEXT:
+      char resultado[100];
+      strcpy(resultado, originalCmd.c_str() + 12);
+      sendData(cmd_encode_text_func(resultado, strlen(resultado)));
+      break;
 
     // case CMD_RANDOM_VALUE: 
     //   char Nbytes[10];

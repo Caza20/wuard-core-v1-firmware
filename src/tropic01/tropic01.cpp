@@ -3,7 +3,7 @@
 Tropic01 tropic01; 
 
 lt_ret_t returnVal;                            // Used for return values of Tropic01's methods.
-char pingMsgToSend[100] = "Hello World!";         // Ping message we will send to TROPIC01 via the Secure Channel.
+char pingMsgToSend[] = "Hello World!";         // Ping message we will send to TROPIC01 via the Secure Channel.
 char pingMsgToReceive[sizeof(pingMsgToSend)];  // Buffer for receiving the Ping message from TROPIC01.
 
 // ---------------------------------------- Utility functions ------------------------------------------

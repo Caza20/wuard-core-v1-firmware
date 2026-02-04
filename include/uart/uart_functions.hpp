@@ -18,6 +18,7 @@
 #include "commands/cmd_bootloader_version_func.hpp"
 #include "commands/cmd_secure_session_func.hpp"
 #include "commands/cmd_fw_version_func.hpp"
+#include "commands/cmd_encode_text_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
