@@ -148,15 +148,15 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       sendData(cmd_encode_text_func(resultado, strlen(resultado)));
       break;
 
-    // case CMD_RANDOM_VALUE: 
-    //   char Nbytes[10];
-    //   strcpy(Nbytes, originalCmd.c_str() + 13);
-    //   if ((uint16_t)atoi(Nbytes) > 255) {
-    //     sendData("ERR:VALUE_TOO_LARGE;\n");
-    //   } else {
-    //     // sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
-    //   }
-    //   break;
+    case CMD_RANDOM_VALUE: 
+      char Nbytes[10];
+      strcpy(Nbytes, originalCmd.c_str() + 13);
+      if ((uint16_t)atoi(Nbytes) > 255) {
+        sendData("ERR:VALUE_TOO_LARGE;\n");
+      } else {
+        sendData(cmd_random_value_func((uint16_t)atoi(Nbytes)));
+      }
+      break;
 
     // case CMD_GENERATE_KEY: {
     //   uint8_t slot = 0; // Default slot 0
