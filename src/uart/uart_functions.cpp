@@ -126,38 +126,11 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
     }
         
     case CMD_FW_VERSION:      
-      // sendData(cmd_fw_version_func());
+      sendData(cmd_fw_version_func());
       break;
 
     case CMD_BOOTLOADER_VERSION: {
-      // uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
-
-      // lt_ret_t res = tropic01.getBootloaderVersion(fw_ver);
-      // if (res != LT_OK) {
-      //   sendData("ERR:FW_VERSION_FAIL;\n");
-      //   return;
-      // }
-
-      // sendData("FW_ver = " + String(fw_ver[3]) + "." + String(fw_ver[2]) + "." + String(fw_ver[1]) + ";" + "\n");
-
-      // String response = cmd_bootloader_version_func(fw_ver);
-
-      // if (response.startsWith("ERR")) {
-      //   sendData(response);
-      //   return;
-      // }
-
-      
-
-      // if (((fw_ver[3] & 0x7f) == 1) && (fw_ver[2] == 0) && (fw_ver[1] == 1) && (fw_ver[0] == 0)) {
-      //   response += tropic01.get_headers_v1();
-      // }
-      // else {
-      //   response += tropic01.get_headers_v2();
-      // }
-
       sendData(cmd_bootloader_version_func());
-
       break;
     }
       

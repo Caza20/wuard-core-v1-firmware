@@ -1,13 +1,14 @@
-#ifndef CMD_SECURE_SESSION_FUNC_HPP
-#define CMD_SECURE_SESSION_FUNC_HPP
+#ifndef CMD_FW_VERSION_FUNC_HPP
+#define CMD_FW_VERSION_FUNC_HPP
 
 /**
- * @file cmd_secure_session.hpp
+ * @file cmd_fw_version_func.hpp
  * @author Wuard
- * @brief This function response the secure session to send by uart.
+ * @brief This function response the firmware version to send by uart.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  */
+
 
 
 #include <Arduino.h>
@@ -16,7 +17,7 @@
 #include "tropic01/tropic01.h"
 
 
-String cmd_secure_session_func(bool flag);
+String cmd_fw_version_func();
 
 
 #endif
