@@ -20,6 +20,7 @@
 #include "commands/cmd_fw_version_func.hpp"
 #include "commands/cmd_encode_text_func.hpp"
 #include "commands/cmd_random_value_func.hpp"
+#include "commands/cmd_generate_key_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1

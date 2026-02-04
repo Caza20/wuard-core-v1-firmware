@@ -158,38 +158,38 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       }
       break;
 
-    // case CMD_GENERATE_KEY: {
-    //   uint8_t slot = 0; // Default slot 0
-    //   slot = (uint8_t)atoi(originalCmd.c_str() + 13);
-    //   if (slot < 0 || slot > 31) {
-    //     sendData("ERR:INVALID_SLOT;\n");
-    //   } else {
-    //     // sendData(cmd_generate_key_func(slot));
-    //   }
-    //   break;
-    // }
+    case CMD_GENERATE_KEY: {
+      uint8_t slot = 0; // Default slot 0
+      slot = (uint8_t)atoi(originalCmd.c_str() + 13);
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT;\n");
+      } else {
+        sendData(cmd_generate_key_func(slot));
+      }
+      break;
+    }
 
-    // case CMD_READ_KEY: {
-    //   uint8_t slot = 0; // Default slot 0
-    //   slot = (uint8_t)atoi(originalCmd.c_str() + 9);
-    //   if (slot < 0 || slot > 31) {
-    //     sendData("ERR:INVALID_SLOT;\n");
-    //   } else {
-    //     // sendData(cmd_read_key_func(slot));
-    //   }
-    //   break;
-    // }
+    case CMD_READ_KEY: {
+      uint8_t slot = 0; // Default slot 0
+      slot = (uint8_t)atoi(originalCmd.c_str() + 9);
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT;\n");
+      } else {
+        sendData(cmd_read_key_func(slot));
+      }
+      break;
+    }
 
-    // case CMD_ERASE_KEY: {
-    //   uint8_t slot = 0; // Default slot 0
-    //   slot = (uint8_t)atoi(originalCmd.c_str() + 10);
-    //   if (slot < 0 || slot > 31) {
-    //     sendData("ERR:INVALID_SLOT;\n");
-    //   } else {
-    //     // sendData(cmd_erase_key_func(slot));
-    //   }
-    //   break;
-    // }
+    case CMD_ERASE_KEY: {
+      uint8_t slot = 0; // Default slot 0
+      slot = (uint8_t)atoi(originalCmd.c_str() + 10);
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT;\n");
+      } else {
+        sendData(cmd_erase_key_func(slot));
+      }
+      break;
+    }
 
     // case CMD_SIGN_MESSAGE: {
     //   String input = originalCmd.substring(13); // Extract after "sign_message "
