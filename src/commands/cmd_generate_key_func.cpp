@@ -27,29 +27,6 @@ String cmd_generate_key_func(uint8_t slot) {
         response = "ERR:FAILED_TO_GENERATE_KEY;\n";
         return response;
     }
-    // ret = lt_out__ecc_key_generate(&__lt_handle__, ecc_slot_t (slot), CURVE_ED25519);
-    // if (ret != LT_OK) {
-    //     return "ERR:FAILED_OUT;\n";
-    // }
-
-    // // Send and receive via L2
-    // ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
-    // if (ret != LT_OK) {
-    //     return "ERR:SEND;\n";
-    // }
-
-    // ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
-    // if (ret != LT_OK) {
-    //     return "ERR:RECV;\n";
-    // }
-
-    // // Decode response
-    // ret = lt_in__ecc_key_generate(&__lt_handle__);
-    // if (ret != LT_OK) {
-    //     return "ERR:FAILED_IN;\n";
-    // }
-
-
 
     // 2) Read the newly generated public key
     String read_response = cmd_read_key_func(slot);
@@ -82,31 +59,12 @@ String cmd_read_key_func(uint8_t slot) {
         response = "ERR:FAILED_TO_READ_KEY;\n";
         return response;
     }
-    // ret = lt_out__ecc_key_read(&__lt_handle__, ecc_slot_t (slot));
-    // if (ret != LT_OK) {
-    //     return "ERR:READ_OUT;\n";
-    // }
-
-    // ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
-    // if (ret != LT_OK) {
-    //     return "ERR:SEND;\n";
-    // }
-
-    // ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
-    // if (ret != LT_OK) {
-    //     return "ERR:RECV;\n";
-    // }
-
-    // ret = lt_in__ecc_key_read(&__lt_handle__, pubkey, &curve, &origin);
-    // if (ret != LT_OK) {
-    //     return "ERR:READ_IN;\n";
-    // }
 
     // Convert public key to HEX string
     response = "OK:KEY:";
 
     char buf[3];
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < TR01_CURVE_ED25519_PUBKEY_LEN; i++) {
         sprintf(buf, "%02X", pubkey[i]);
         response += buf;
     }
@@ -131,27 +89,6 @@ String cmd_erase_key_func(uint8_t slot) {
         response = "ERR:FAILED_TO_ERASE_KEY;\n";
         return response;
     }
-    // ret = lt_out__ecc_key_erase(&__lt_handle__, ecc_slot_t (slot));
-    // if (ret != LT_OK) {
-    //     return "ERR:ERASE_OUT;\n";
-    // }
-
-    // // Send and receive via L2
-    // ret = lt_l2_send_encrypted_cmd(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
-    // if (ret != LT_OK) {
-    //     return "ERR:SEND;\n";
-    // }
-
-    // ret = lt_l2_recv_encrypted_res(&__lt_handle__.l2, __lt_handle__.l3.buff, __lt_handle__.l3.buff_len);
-    // if (ret != LT_OK) {
-    //     return "ERR:RECV;\n";
-    // }
-
-    // // Decode response
-    // ret = lt_in__ecc_key_erase(&__lt_handle__);
-    // if (ret != LT_OK) {
-    //     return "ERR:ERASE_IN;\n";
-    // }
 
     response = "OK:KEY_ERASED;";
 

@@ -191,38 +191,38 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       break;
     }
 
-    // case CMD_SIGN_MESSAGE: {
-    //   String input = originalCmd.substring(13); // Extract after "sign_message "
-    //   input.trim();
+    case CMD_SIGN_MESSAGE: {
+      String input = originalCmd.substring(13); // Extract after "sign_message "
+      input.trim();
 
-    //   int firstUnd = input.indexOf('_'); // to find the first underscore after "sign_message"
-    //   int secondUnd = input.indexOf('_', firstUnd + 1); // to find the second underscore
+      int firstUnd = input.indexOf('_'); // to find the first underscore after "sign_message"
+      int secondUnd = input.indexOf('_', firstUnd + 1); // to find the second underscore
 
-    //   uint8_t slot = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain slot between 
+      uint8_t slot = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain slot between 
 
-    //   if (slot < 0 || slot > 31) {
-    //     sendData("ERR:INVALID_SLOT;\n");
-    //   } else {
-    //     // Extract message after "sign_message "
-    //     String message = input.substring(firstUnd + 1);
-    //     message.trim();
+      if (slot < 0 || slot > 31) {
+        sendData("ERR:INVALID_SLOT;\n");
+      } else {
+        // Extract message after "sign_message "
+        String message = input.substring(firstUnd + 1);
+        message.trim();
 
-    //     if (message.length() == 0) {
-    //       sendData("ERR:EMPTY_MESSAGE;\n");
-    //     } else {
-    //       // Convert message to byte array
-    //       uint16_t msg_len = message.length();
-    //       uint8_t* msg_bytes = new uint8_t[msg_len];
-    //       for (uint16_t i = 0; i < msg_len; i++) {
-    //         msg_bytes[i] = (uint8_t)message[i];
-    //       }
-    //       // Call signing function
-    //       // sendData(cmd_sign_eddsa_func(ecc_slot_t(slot), msg_bytes, msg_len));
-    //       delete[] msg_bytes;
-    //     }
-    //   }
-    //   break;
-    // }
+        if (message.length() == 0) {
+          sendData("ERR:EMPTY_MESSAGE;\n");
+        } else {
+          // Convert message to byte array
+          uint16_t msg_len = message.length();
+          uint8_t* msg_bytes = new uint8_t[msg_len];
+          for (uint16_t i = 0; i < msg_len; i++) {
+            msg_bytes[i] = (uint8_t)message[i];
+          }
+          // Call signing function
+          sendData(cmd_sign_eddsa_func(slot, msg_bytes, msg_len));
+          delete[] msg_bytes;
+        }
+      }
+      break;
+    }
 
     // case CMD_HASH: {
     //   String input = originalCmd.substring(12); // Extract after "sign_message "
