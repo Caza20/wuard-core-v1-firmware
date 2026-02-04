@@ -243,54 +243,54 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       break;
     }
 
-    // case CMD_MCOUNTER_INIT: {
-    //   String input = originalCmd.substring(14); // Extract after "mcounter_init "
-    //   input.trim();
+    case CMD_MCOUNTER_INIT: {
+      String input = originalCmd.substring(14); // Extract after "mcounter_init "
+      input.trim();
 
-    //   int firstUnd = input.indexOf('_'); // to find the first underscore after "mcounter_init"
+      int firstUnd = input.indexOf('_'); // to find the first underscore after "mcounter_init"
 
-    //   uint8_t index = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain index between 
+      uint8_t index = (uint8_t)atoi(input.substring(0, firstUnd).c_str()); // Obtain index between 
 
-    //   if (index < 16) {
-    //     sendData("ERR:INVALID_INDEX;\n");
-    //   } else {
-    //     // Extract value after "mcounter_init "
-    //     String valueStr = input.substring(firstUnd + 1);
-    //     valueStr.trim();
-    //     uint32_t value = (uint32_t)atoi(valueStr.c_str());
+      if (index > 15) {
+        sendData("ERR:INVALID_INDEX;\n");
+      } else {
+        // Extract value after "mcounter_init "
+        String valueStr = input.substring(firstUnd + 1);
+        valueStr.trim();
+        uint32_t value = (uint32_t)atoi(valueStr.c_str());
 
-    //     // sendData(cmd_mcounter_init_func(index, value));
-    //   }
-    //   break;
-    // }
+        sendData(cmd_mcounter_init_func(index, value));
+      }
+      break;
+    }
 
-    // case CMD_MCOUNTER_GET: {
-    //   String input = originalCmd.substring(13); // Extract after "mcounter_get "
-    //   input.trim();
+    case CMD_MCOUNTER_GET: {
+      String input = originalCmd.substring(13); // Extract after "mcounter_get "
+      input.trim();
 
-    //   uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+      uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
 
-    //   if (index < 16) {
-    //     sendData("ERR:INVALID_INDEX;\n");
-    //   } else {
-    //     // sendData(cmd_mcounter_get_func(index));
-    //   }
-    //   break;
-    // }
+      if (index > 15) {
+        sendData("ERR:INVALID_INDEX;\n");
+      } else {
+        sendData(cmd_mcounter_get_func(index));
+      }
+      break;
+    }
 
-    // case CMD_MCOUNTER_UPDATE: {
-    //   String input = originalCmd.substring(16); // Extract after "mcounter_update "
-    //   input.trim();
+    case CMD_MCOUNTER_UPDATE: {
+      String input = originalCmd.substring(16); // Extract after "mcounter_update "
+      input.trim();
 
-    //   uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
+      uint8_t index = (uint8_t)atoi(input.c_str()); // Obtain index
 
-    //   if (index < 16) {
-    //     sendData("ERR:INVALID_INDEX;\n");
-    //   } else {
-    //     // sendData(cmd_mcounter_update_func(index));
-    //   }
-    //   break;
-    // }
+      if (index > 15) {
+        sendData("ERR:INVALID_INDEX;\n");
+      } else {
+        sendData(cmd_mcounter_update_func(index));
+      }
+      break;
+    }
 
     
 

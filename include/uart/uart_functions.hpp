@@ -23,6 +23,7 @@
 #include "commands/cmd_generate_key_func.hpp"
 #include "commands/cmd_sign_eddsa_func.hpp"
 #include "commands/cmd_hash_func.hpp"
+#include "commands/cmd_mcounter_func.hpp"
 
 /* ---------------- UART 1 ---------------- */
 #define LT_UART_PORT uart1
