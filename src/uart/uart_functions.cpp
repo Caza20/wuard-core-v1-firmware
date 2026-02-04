@@ -224,24 +224,24 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
       break;
     }
 
-    // case CMD_HASH: {
-    //   String input = originalCmd.substring(12); // Extract after "sign_message "
-    //   input.trim();
+    case CMD_HASH: {
+      String input = originalCmd.substring(12); // Extract after "sign_message "
+      input.trim();
 
-    //   if (input.length() == 0) {
-    //     sendData("ERR:EMPTY_MESSAGE;\n");
-    //   } else {
-    //     // Convert message to byte array
-    //     uint8_t* msg_bytes = new uint8_t[input.length()];
-    //     for (uint16_t i = 0; i < input.length(); i++) {
-    //       msg_bytes[i] = (uint8_t)input[i];
-    //     }
-    //     // Call signing function
-    //     // sendData(cmd_hash_func(msg_bytes, input.length()));
-    //     delete[] msg_bytes;
-    //   }
-    //   break;
-    // }
+      if (input.length() == 0) {
+        sendData("ERR:EMPTY_MESSAGE;\n");
+      } else {
+        // Convert message to byte array
+        uint8_t* msg_bytes = new uint8_t[input.length()];
+        for (uint16_t i = 0; i < input.length(); i++) {
+          msg_bytes[i] = (uint8_t)input[i];
+        }
+        // Call signing function
+        sendData(cmd_hash_func(msg_bytes, input.length()));
+        delete[] msg_bytes;
+      }
+      break;
+    }
 
     // case CMD_MCOUNTER_INIT: {
     //   String input = originalCmd.substring(14); // Extract after "mcounter_init "
