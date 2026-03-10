@@ -61,7 +61,7 @@ String cmd_mcounter_get_func(uint8_t index) {
     uint32_t value = 0;
 
     lt_ret_t ret;
-    ret = tropic01.mcounterGet((lt_mcounter_index_t)index, &value);
+    ret = tropic01.mcounterGet((lt_mcounter_index_t)index, value);
     if (ret != LT_OK) {
         // return "ERR:ENCODE;";
         return String("ERR:ENCODE;") + "code:" + String(ret) + ";";

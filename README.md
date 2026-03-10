@@ -337,6 +337,60 @@ Tropic01 communication handled through secure L3 interface when needed.
 
 Suitable for HSM-like operations in embedded environments.
 
+---
+
+## ⚙️ PlatformIO Build Configuration
+
+### Raspberry Pi Pico HAL
+
+When targeting the Raspberry Pi Pico / RP2350, you **must** explicitly set the platform flag in your `platformio.ini`. Without it, the `LibtropicArduino` library defaults to the Arduino HAL, which will cause compilation errors in a Pico-only environment.
+
+Add the following to your `build_flags`:
+
+```ini
+build_flags =
+    -DLT_PLATFORM=rpi_pico
+```
+
+This tells the library's build system to select `libtropic/hal/rpi-pico/` instead of `libtropic/hal/arduino/` when compiling the HAL layer.
+
+### mbedTLS Integration
+
+This project uses a custom mbedTLS configuration file to strip down the library to only what is needed on the Pico. Add the following flags to your `build_flags`:
+
+```ini
+build_flags =
+    -I include
+    -D MBEDTLS_CONFIG_FILE=\"mbedtls_custom_config.h\"
+    -D CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
+```
+
+| Flag | Purpose |
+|---|---|
+| `-I include` | Adds the `include/` folder to the compiler search path so `mbedtls_custom_config.h` can be found. |
+| `-D MBEDTLS_CONFIG_FILE=\"mbedtls_custom_config.h\"` | Instructs mbedTLS to use the project's custom configuration file instead of its defaults. |
+| `-D CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY` | Prevents CMake from attempting to link a shared library test binary, which is unsupported on bare-metal targets like the Pico. |
+
+### Full `platformio.ini` example
+
+```ini
+[env:pico]
+platform = https://github.com/maxgerhardt/platform-raspberrypi.git
+board = pico
+framework = arduino
+board_build.core = earlephilhower
+
+lib_deps =
+    https://github.com/Caza20/libtropic-platformio.git#develop
+    baracodadailyhealthtech/mbedtls
+
+build_flags =
+    -DLT_PLATFORM=rpi_pico
+    -I include
+    -D MBEDTLS_CONFIG_FILE=\"mbedtls_custom_config.h\"
+    -D CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
+```
+
 ## 🤝 Contributing
 
 Pull requests are welcome!

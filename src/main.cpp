@@ -39,6 +39,11 @@ uartFunctions uart;  // Create an instance of uartFunctions
 // char pingMsgToReceive[sizeof(pingMsgToSend)];  // Buffer for receiving the Ping message from TROPIC01.
 // // -----------------------------------------------------------------------------------------------------
 
+// ------------------------------------------ Other variables ------------------------------------------
+// Used when initializing MbedTLS's PSA Crypto.
+psa_status_t mbedtlsInitStatus;
+// -----------------------------------------------------------------------------------------------------
+
 // // ---------------------------------------- Utility functions ------------------------------------------
 // // Helper function to save some source code lines when printing Libtropic errors using Serial.
 // static void printLibtropicError(const char prefixMsg[], const lt_ret_t ret)
@@ -72,6 +77,16 @@ void setup() {
 
   // to have a moment to open the serial monitor
   delay(5000);
+
+  // Init MbedTLS's PSA Crypto.
+  uart.sendData("Initializing MbedTLS PSA Crypto...");
+  psa_status_t mbedtlsInitStatus = psa_crypto_init();
+  if (mbedtlsInitStatus != PSA_SUCCESS) {
+    uart.sendData("MbedTLS's PSA Crypto initialization failed, psa_status_t=");
+    uart.sendData(String(mbedtlsInitStatus));
+    cleanResourcesAndLoopForever();
+  }
+  uart.sendData("  OK");
 
   tropic01.begin();
   // Init Tropic01 resources.

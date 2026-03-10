@@ -18,7 +18,7 @@ String cmd_bootloader_version_func() {
 
     uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
 
-    lt_ret_t res = tropic01.getBootloaderVersion(fw_ver);
+    lt_ret_t res = tropic01.getBootloaderFWVersion(fw_ver);
     if (res != LT_OK) {
       response = "ERR:FW_VERSION_FAIL;\n";
       return response;

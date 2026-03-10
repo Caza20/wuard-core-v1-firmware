@@ -14,18 +14,36 @@
 
 
 
-String cmd_fw_version_func() {
+String cmd_riscv_fw_version_func() {
     String response = "";
 
     // This variable is reused on more places in this example to store different firmware versions
     uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
 
-    lt_ret_t ret = tropic01.getFWVersion(fw_ver);
+    lt_ret_t ret = tropic01.getRiscvFWVersion(fw_ver);
     if (ret == LT_OK) {
-        response = tropic01.printFWVersion(fw_ver);
+        response = tropic01.printRiscvFWVersion(fw_ver);
     }
     else {
-        response = "ERR:FAILED_TO_GET_FW_VERSION;\n";
+        response = "ERR:FAILED_TO_GET_RISCV_FW_VERSION;\n";
+        lt_deinit(tropic01.getHandle());
+    }
+
+    return response;
+}
+
+String cmd_spect_fw_version_func() {
+    String response = "";
+
+    // This variable is reused on more places in this example to store different firmware versions
+    uint8_t fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
+
+    lt_ret_t ret = tropic01.getSpectFWVersion(fw_ver);
+    if (ret == LT_OK) {
+        response = tropic01.printSpectFWVersion(fw_ver);
+    }
+    else {
+        response = "ERR:FAILED_TO_GET_SPECT_FW_VERSION;\n";
         lt_deinit(tropic01.getHandle());
     }
 

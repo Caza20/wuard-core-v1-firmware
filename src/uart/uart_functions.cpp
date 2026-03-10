@@ -126,7 +126,8 @@ void uartFunctions::handleCommand(CommandId id, const String &originalCmd) {
     }
         
     case CMD_FW_VERSION:      
-      sendData(cmd_fw_version_func());
+      sendData(cmd_riscv_fw_version_func());
+      sendData(cmd_spect_fw_version_func());
       break;
 
     case CMD_BOOTLOADER_VERSION: {

@@ -17,7 +17,8 @@
 #include "tropic01/tropic01.h"
 
 
-String cmd_fw_version_func();
+String cmd_riscv_fw_version_func();
+String cmd_spect_fw_version_func();
 
 
 #endif
